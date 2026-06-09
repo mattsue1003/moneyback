@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>留愛不留爭｜遺產與老後規劃</title>
+<style>
+  :root{
+    --orange:#E8552D;
+    --amber:#F4A93C;
+    --teal:#028090;
+    --ink:#12343B;
+    --cloud:#F4F8F8;
+    --paper:#FBF7F0;
+    --line:#E3DACE;
+    --green:#3F8F5B;
+    --red:#C7503A;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Microsoft JhengHei","PingFang TC","Heiti TC",sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.85;
+    font-size:18px;
+  }
+  img{max-width:100%}
+
+  /* ===== Progress bar ===== */
+  #progress{
+    position:fixed;top:0;left:0;height:5px;width:0%;
+    background:linear-gradient(90deg,var(--orange),var(--amber));
+    z-index:1000;transition:width .15s ease;
+  }
+
+  /* ===== Nav dots ===== */
+  #nav{
+    position:fixed;right:18px;top:50%;transform:translateY(-50%);
+    z-index:900;display:flex;flex-direction:column;gap:11px;
+  }
+  #nav a{
+    width:13px;height:13px;border-radius:50%;background:#cdbfae;
+    border:2px solid var(--paper);transition:.25s;display:block;
+  }
+  #nav a:hover{transform:scale(1.3)}
+  #nav a.active{background:var(--orange);transform:scale(1.35)}
+
+  /* ===== Slide base ===== */
+  .slide{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding:64px 7vw;position:relative;
+    border-bottom:1px dashed var(--line);
+  }
+  .slide-inner{max-width:920px;margin:0 auto;width:100%}
+  .eyebrow{
+    display:inline-block;font-size:15px;letter-spacing:3px;font-weight:700;
+    color:var(--teal);margin-bottom:18px;
+    border-left:5px solid var(--amber);padding-left:12px;
+  }
+  h1{font-size:clamp(36px,6vw,68px);line-height:1.2;font-weight:900;margin-bottom:24px}
+  h2{font-size:clamp(28px,4.5vw,46px);line-height:1.25;font-weight:900;margin-bottom:26px}
+  h3{font-size:clamp(21px,3vw,27px);font-weight:800;margin-bottom:14px;color:var(--ink)}
+  p.lead{font-size:clamp(19px,2.4vw,23px);color:#3c4f53}
+  .accent{color:var(--orange)}
+  .tealtxt{color:var(--teal)}
+
+  /* ===== Cover ===== */
+  #cover{
+    background:radial-gradient(circle at 20% 20%,#fff6ec 0%,var(--paper) 55%);
+    text-align:left;
+  }
+  #cover .badge{
+    display:inline-block;background:var(--ink);color:#fff;padding:7px 18px;
+    border-radius:30px;font-size:14px;letter-spacing:2px;margin-bottom:26px;
+  }
+  #cover h1 .big{display:block;color:var(--orange)}
+  .cover-meta{
+    margin-top:36px;display:flex;flex-wrap:wrap;gap:14px;
+  }
+  .chip{
+    background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:10px 18px;font-size:15px;font-weight:700;color:var(--teal);
+  }
+  .scroll-hint{
+    margin-top:48px;font-size:15px;color:#8a7f72;display:flex;align-items:center;gap:10px;
+  }
+  .scroll-hint span{
+    display:inline-block;width:26px;height:42px;border:2px solid #b6a892;border-radius:14px;
+    position:relative;
+  }
+  .scroll-hint span::after{
+    content:"";position:absolute;left:50%;top:8px;width:5px;height:5px;border-radius:50%;
+    background:var(--orange);transform:translateX(-50%);animation:drop 1.4s infinite;
+  }
+  @keyframes drop{0%{top:8px;opacity:1}70%{top:24px;opacity:0}100%{opacity:0}}
+
+  /* ===== Cards / grids ===== */
+  .grid{display:grid;gap:18px;margin-top:22px}
+  .g2{grid-template-columns:1fr 1fr}
+  .card{
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 24px;
+    box-shadow:0 4px 18px rgba(18,52,59,.05);
+  }
+  .card .ico{
+    width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:26px;margin-bottom:14px;background:var(--cloud);
+  }
+  .card.warm .ico{background:#fdeee4}
+  .stat-big{font-size:clamp(54px,9vw,96px);font-weight:900;color:var(--orange);line-height:1}
+  .quote{
+    border-left:6px solid var(--amber);padding:14px 0 14px 24px;font-size:clamp(20px,3vw,28px);
+    font-weight:800;color:var(--ink);margin:24px 0;
+  }
+  ul.clean{list-style:none;margin-top:18px}
+  ul.clean li{
+    padding:14px 0 14px 38px;position:relative;border-bottom:1px solid var(--line);
+  }
+  ul.clean li::before{
+    content:"●";color:var(--amber);position:absolute;left:8px;top:14px;font-size:14px;
+  }
+  ul.clean li b{color:var(--teal)}
+
+  /* ===== Interactive shared ===== */
+  .interactive{
+    background:linear-gradient(135deg,#fff 0%,#fffaf3 100%);
+    border:2px solid var(--amber);border-radius:22px;padding:30px 28px;margin-top:14px;
+    box-shadow:0 8px 30px rgba(232,85,45,.08);
+  }
+  .tag-interactive{
+    display:inline-block;background:var(--orange);color:#fff;font-size:13px;font-weight:800;
+    letter-spacing:1.5px;padding:5px 14px;border-radius:20px;margin-bottom:16px;
+  }
+  button{font-family:inherit;cursor:pointer}
+  .btn{
+    background:var(--teal);color:#fff;border:none;padding:13px 26px;border-radius:12px;
+    font-size:17px;font-weight:800;transition:.2s;
+  }
+  .btn:hover{background:#016b78;transform:translateY(-2px)}
+  .btn.alt{background:var(--orange)}
+  .btn.alt:hover{background:#cf4420}
+  .btn.ghost{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+
+  /* Quiz */
+  .q-block{margin-bottom:26px}
+  .q-num{font-weight:900;color:var(--orange);margin-right:8px}
+  .options{display:flex;flex-direction:column;gap:11px;margin-top:14px}
+  .opt{
+    text-align:left;background:#fff;border:2px solid var(--line);border-radius:13px;
+    padding:14px 18px;font-size:17px;font-weight:600;color:var(--ink);transition:.18s;
+  }
+  .opt:hover{border-color:var(--amber)}
+  .opt.correct{background:#e8f5ec;border-color:var(--green);color:#1f5e36}
+  .opt.wrong{background:#fbe9e6;border-color:var(--red);color:#8c2c1c}
+  .opt:disabled{cursor:default}
+  .explain{
+    margin-top:14px;padding:14px 18px;background:var(--cloud);border-radius:12px;
+    font-size:16px;line-height:1.7;display:none;border-left:5px solid var(--teal);
+  }
+  .explain.show{display:block;animation:fade .3s}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .score-box{
+    text-align:center;padding:24px;background:var(--ink);color:#fff;border-radius:16px;
+    margin-top:20px;display:none;
+  }
+  .score-box.show{display:block}
+  .score-box .big{font-size:48px;font-weight:900;color:var(--amber)}
+
+  /* Calculator */
+  .calc-row{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-bottom:18px}
+  .field{flex:1;min-width:160px}
+  .field label{display:block;font-size:15px;font-weight:700;margin-bottom:7px;color:var(--teal)}
+  .field input,.field select{
+    width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:11px;
+    font-size:17px;font-family:inherit;color:var(--ink);background:#fff;
+  }
+  .field input:focus,.field select:focus{outline:none;border-color:var(--amber)}
+  .heir-row{
+    display:flex;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);
+    border-radius:11px;padding:10px 14px;margin-bottom:10px;
+  }
+  .heir-row input{flex:1;border:none;font-size:16px;font-family:inherit;padding:6px}
+  .heir-row input:focus{outline:none}
+  .heir-row .del{background:#fbe9e6;color:var(--red);border:none;border-radius:8px;padding:6px 12px;font-weight:800}
+  .result-card{
+    margin-top:20px;background:#fff;border:2px solid var(--teal);border-radius:16px;
+    padding:22px;display:none;
+  }
+  .result-card.show{display:block}
+  .result-line{
+    display:flex;justify-content:space-between;align-items:center;padding:12px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .result-line:last-child{border-bottom:none}
+  .result-line .amt{font-weight:900;color:var(--orange);font-size:20px}
+  .result-line .sub{font-size:13px;color:#8a7f72;display:block;font-weight:600}
+  .note{font-size:14px;color:#8a7f72;margin-top:12px;line-height:1.6}
+
+  /* calc bars */
+  .bar-legend{display:flex;gap:22px;margin-bottom:18px;font-size:14px;font-weight:700;color:#5a6c70}
+  .bar-legend .sw{display:inline-block;width:16px;height:16px;border-radius:4px;margin-right:6px;vertical-align:-3px}
+  .sw-share{background:var(--teal)}
+  .sw-reserve{background:var(--orange)}
+  .calc-item{padding:14px 0;border-bottom:1px dashed var(--line)}
+  .calc-item:last-child{border-bottom:none}
+  .calc-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+  .calc-head b{font-size:18px;color:var(--ink)}
+  .calc-head .ratio{font-size:13px;font-weight:700;color:var(--teal);background:var(--cloud);padding:3px 10px;border-radius:20px}
+  .bar-wrap{background:#f0eadf;border-radius:8px;height:18px;overflow:hidden;margin-bottom:4px}
+  .bar{height:100%;border-radius:8px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+  .bar-share{background:var(--teal)}
+  .bar-reserve{background:linear-gradient(90deg,var(--orange),var(--amber))}
+  .bar-val{font-size:14px;color:#5a6c70;margin-bottom:10px}
+  .bar-val b{font-size:16px}
+
+  /* Detective */
+  .case{
+    background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:18px;
+  }
+  .case-title{font-weight:900;color:var(--teal);font-size:19px;margin-bottom:8px}
+  .case-body{font-size:16px;color:#3c4f53;margin-bottom:18px}
+  .verdict-btns{display:flex;gap:12px;flex-wrap:wrap}
+  .vbtn{
+    flex:1;min-width:130px;border:2px solid var(--line);background:#fff;border-radius:12px;
+    padding:14px;font-size:16px;font-weight:800;transition:.18s;
+  }
+  .vbtn:hover{border-color:var(--amber)}
+  .vbtn.valid{color:var(--green)}
+  .vbtn.invalid{color:var(--red)}
+  .vbtn.picked-right{background:#e8f5ec;border-color:var(--green)}
+  .vbtn.picked-wrong{background:#fbe9e6;border-color:var(--red)}
+  .case-explain{
+    margin-top:16px;padding:16px;border-radius:12px;background:var(--cloud);
+    border-left:5px solid var(--orange);font-size:15px;line-height:1.7;display:none;
+  }
+  .case-explain.show{display:block;animation:fade .3s}
+  .verdict-label{font-weight:900}
+  .verdict-label.v{color:var(--green)}
+  .verdict-label.i{color:var(--red)}
+
+  /* checklist */
+  .check-item{
+    display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);
+    border-radius:13px;padding:16px 18px;margin-bottom:12px;cursor:pointer;transition:.18s;
+  }
+  .check-item:hover{border-color:var(--amber)}
+  .check-item .box{
+    width:26px;height:26px;border:2px solid var(--teal);border-radius:7px;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;transition:.18s;
+  }
+  .check-item.done .box{background:var(--green);border-color:var(--green)}
+  .check-item.done .txt{text-decoration:line-through;color:#9a9286}
+  .check-item .txt b{display:block;color:var(--ink)}
+  .check-item .txt span{font-size:14px;color:#8a7f72}
+
+  footer{
+    background:var(--ink);color:#cfe1e3;text-align:center;padding:50px 20px;font-size:15px;
+  }
+  footer .big{color:#fff;font-size:22px;font-weight:900;margin-bottom:10px}
+
+  @media(max-width:680px){
+    body{font-size:17px}
+    .slide{padding:54px 7vw}
+    .g2{grid-template-columns:1fr}
+    #nav{right:8px;gap:8px}
+    #nav a{width:10px;height:10px}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<nav id="nav"></nav>
+
+<!-- ============ COVER ============ -->
+<section class="slide" id="s0" data-label="封面">
+  <div class="slide-inner" id="cover">
+    <span class="badge">社區健康講座 · 樂齡生活法律</span>
+    <h1>留愛，不留爭<span class="big">遺產與老後規劃</span></h1>
+    <p class="lead">把錢用在自己尊嚴的晚年，<br>把愛留給下一代——而不是一場官司。</p>
+    <div class="cover-meta">
+      <span class="chip">📊 真實數據</span>
+      <span class="chip">🧮 特留分計算</span>
+      <span class="chip">🔍 遺囑偵探</span>
+      <span class="chip">✅ 規劃清單</span>
+    </div>
+    <div class="scroll-hint"><span></span> 往下滑動開始，途中有 4 個互動關卡</div>
+  </div>
+</section>
+
+<!-- ============ 1 數據 ============ -->
+<section class="slide" id="s1" data-label="爭產真相">
+  <div class="slide-inner">
+    <span class="eyebrow">真相一</span>
+    <h2>爭產的人不多，<br>但只要發生，往往<span class="accent">很慘烈</span></h2>
+    <div class="grid g2">
+      <div class="card warm">
+        <div class="stat-big">1.6%</div>
+        <h3 style="margin-top:10px">遺產訴訟比例</h3>
+        <p>2024 年全台家事案件約 18 萬件，因「遺產分割」或「遺囑無效」打官司的，只佔約 1.6%（約 2000 多件）。</p>
+      </div>
+      <div class="card">
+        <div class="ico">🔥</div>
+        <h3>為什麼還是要在意？</h3>
+        <p>一旦發生，親人常為了「一口氣」或極小的利益（一樓停車權、頂樓曬衣權）打上十幾條官司、反目成仇。比例低，代價高。</p>
+      </div>
+    </div>
+    <div class="quote">「在討論繼承之前，請先討論你的老後。」</div>
+  </div>
+</section>
+
+<!-- ============ 2 大繼承時代 ============ -->
+<section class="slide" id="s2" data-label="大繼承時代">
+  <div class="slide-inner">
+    <span class="eyebrow">真相二</span>
+    <h2>留太多遺產，<br>不見得是好事</h2>
+    <p class="lead">我們正處在「大繼承經濟時代」——年輕人的起跑點，常常取決於父母口袋的深度。</p>
+    <ul class="clean">
+      <li>財富來得太容易，反而可能<b>剝奪奮鬥的熱情</b>，甚至養出「躺平」。</li>
+      <li>台灣有特別的<b>「特留分」</b>制度：法律強制保障繼承人最低的繼承比例。</li>
+      <li>修法趨勢：立法院倡議<b>廢除「手足的特留分」</b>，因為單身無子嗣者變多，財產不該被迫流向早已疏遠的兄弟姊妹。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 互動 1：QUIZ ============ -->
+<section class="slide" id="s3" data-label="互動：問答">
+  <div class="slide-inner">
+    <span class="eyebrow">互動關卡 ①</span>
+    <h2>遺產冷知識搶答</h2>
+    <p class="lead">3 題小測驗，看看你對遺產規劃的直覺準不準。</p>
+    <div class="interactive">
+      <span class="tag-interactive">點選作答</span>
+      <div id="quiz"></div>
+      <div class="score-box" id="scoreBox">
+        <p>你的成績</p>
+        <div class="big"><span id="scoreNum">0</span> / 3</div>
+        <p id="scoreMsg"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 觀念：應繼分 vs 特留分 ============ -->
+<section class="slide" id="s3b" data-label="應繼分與特留分">
+  <div class="slide-inner">
+    <span class="eyebrow">先搞懂兩個詞</span>
+    <h2>應繼分 vs 特留分<br><span class="tealtxt" style="font-size:.6em">差在哪？</span></h2>
+    <p class="lead">這兩個常被搞混。一句話分清楚——</p>
+    <div class="grid g2">
+      <div class="card">
+        <div class="ico">📐</div>
+        <h3 class="tealtxt">應繼分</h3>
+        <p><b>「沒有遺囑時，法律幫你分的比例」</b>。如果長輩生前沒留遺囑，遺產就依民法規定，由繼承人按應繼分分配。</p>
+      </div>
+      <div class="card warm">
+        <div class="ico">🛡️</div>
+        <h3 class="accent">特留分</h3>
+        <p><b>「就算有遺囑，也不能少於這個底線」</b>。是法律保障每位繼承人「至少」能拿到的最低額度，立遺囑人不能完全剝奪。</p>
+      </div>
+    </div>
+    <div class="quote">特留分 ＝ 應繼分 × 一個固定比例</div>
+    <ul class="clean">
+      <li>配偶、子女（直系卑親屬）、父母：特留分為應繼分的 <b>1/2</b></li>
+      <li>兄弟姊妹、祖父母：特留分為應繼分的 <b>1/3</b>（立法院正倡議廢除手足特留分）</li>
+      <li>舉例：應繼分若是 300 萬，子女的特留分底線就是 <b>150 萬</b>——遺囑分得再少，也不能低於這個數。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ 互動 2：CALCULATOR ============ -->
+<section class="slide" id="s4" data-label="互動：特留分試算">
+  <div class="slide-inner">
+    <span class="eyebrow">互動關卡 ②</span>
+    <h2>應繼分 × 特留分 計算機</h2>
+    <p class="lead">輸入遺產總額與繼承人，同時算出每人的「應繼分」與「特留分（最低保障）」。</p>
+    <div class="interactive">
+      <span class="tag-interactive">試算工具</span>
+      <div class="calc-row">
+        <div class="field">
+          <label>遺產總額（新台幣）</label>
+          <input type="number" id="estate" placeholder="例如 6000000" value="6000000">
+        </div>
+        <div class="field">
+          <label>繼承人類型</label>
+          <select id="heirType">
+            <option value="child">配偶 + 子女</option>
+            <option value="childOnly">只有子女</option>
+            <option value="parent">配偶 + 父母（無子女）</option>
+            <option value="sibling">配偶 + 兄弟姊妹（無子女、父母）</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="margin-bottom:16px">
+        <label id="countLabel">子女人數</label>
+        <input type="number" id="heirCount" value="2" min="1" max="10">
+      </div>
+      <button class="btn alt" onclick="calcReserve()">計算應繼分與特留分</button>
+      <div class="result-card" id="calcResult"></div>
+      <p class="note" id="calcNote"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 互動 3：DETECTIVE ============ -->
+<section class="slide" id="s5" data-label="互動：遺囑偵探">
+  <div class="slide-inner">
+    <span class="eyebrow">互動關卡 ③</span>
+    <h2>遺囑成立偵探</h2>
+    <p class="lead">台灣自書遺囑規定極嚴格：<b>必須全程親筆手寫、不可打字</b>，改字要註明字數並簽名。讀完每個案例，判斷這份遺囑「有效」還是「無效」。</p>
+    <div class="interactive">
+      <span class="tag-interactive">推理判斷</span>
+      <div id="detective"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 除了錢 ============ -->
+<section class="slide" id="s6" data-label="除了錢以外">
+  <div class="slide-inner">
+    <span class="eyebrow">真相三</span>
+    <h2>遺囑裡，<br>除了錢還能交代什麼？</h2>
+    <p class="lead">遺囑是回顧一生、展現自主權的神聖文件。賴芳玉律師建議還能寫下：</p>
+    <div class="grid g2">
+      <div class="card"><div class="ico">🙏</div><h3>表達感謝</h3><p>用「遺贈」方式，回報晚年好好陪伴照顧你、卻沒有血緣的人。</p></div>
+      <div class="card"><div class="ico">🌱</div><h3>傳承志業</h3><p>捐給基金會、動物之家，延續晚年想做的事。</p></div>
+      <div class="card"><div class="ico">🕊️</div><h3>後事處置</h3><p>指定器官捐贈、大體研究，或環保葬（樹葬、花葬）。</p></div>
+      <div class="card warm"><div class="ico">🔑</div><h3>指定遺囑執行人</h3><p>關鍵！避免身邊照顧者與疏遠手足爭奪後事權，讓人生圓滿落幕。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 互動 4：CHECKLIST ============ -->
+<section class="slide" id="s7" data-label="互動：規劃清單">
+  <div class="slide-inner">
+    <span class="eyebrow">互動關卡 ④</span>
+    <h2>我的老後規劃清單</h2>
+    <p class="lead">點一點，盤點自己想好了哪些事。今天回家就能開始。</p>
+    <div class="interactive">
+      <span class="tag-interactive">勾選盤點</span>
+      <div id="checklist"></div>
+      <div class="score-box" id="checkBox">
+        <div class="big"><span id="checkNum">0</span> / 6</div>
+        <p id="checkMsg">每勾起一項，就離安心更近一步。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 結語 ============ -->
+<section class="slide" id="s8" data-label="結語">
+  <div class="slide-inner">
+    <span class="eyebrow">最後</span>
+    <h2>先顧好自己，<br>才是給家人最好的禮物</h2>
+    <ul class="clean">
+      <li>優雅老去成本超乎想像：單人房、管灌、看護、特別護士，<b>每月動輒十幾萬</b>。</li>
+      <li>別讓自己「窮得只剩下錢，沒有情」——不要用金錢控制下一代。</li>
+      <li>把焦點放回「人」，讓親密關係基於<b>純粹的愛</b>，而不是財務算計。</li>
+    </ul>
+    <div class="quote">大方地把辛苦賺來的錢，<br>花在自己晚年的<span class="accent">尊嚴</span>上。</div>
+  </div>
+</section>
+
+<footer>
+  <div class="big">留愛，不留爭</div>
+  <p>內容整理自《博音》EP228 ft. 賴芳玉律師<br>本簡報供社區衛教與長者生活講座使用，個案請諮詢專業律師。</p>
+</footer>
+
+<script>
+/* ===== Progress + nav ===== */
+const slides=[...document.querySelectorAll('.slide')];
+const nav=document.getElementById('nav');
+slides.forEach((s,i)=>{
+  const a=document.createElement('a');
+  a.href='#'+s.id;a.title=s.dataset.label;a.dataset.i=i;
+  nav.appendChild(a);
+});
+const dots=[...nav.children];
+function onScroll(){
+  const sc=window.scrollY, h=document.documentElement.scrollHeight-window.innerHeight;
+  document.getElementById('progress').style.width=(sc/h*100)+'%';
+  let cur=0;
+  slides.forEach((s,i)=>{ if(window.scrollY>=s.offsetTop-window.innerHeight/2) cur=i; });
+  dots.forEach((d,i)=>d.classList.toggle('active',i===cur));
+}
+window.addEventListener('scroll',onScroll);onScroll();
+
+/* ===== QUIZ ===== */
+const quizData=[
+  {q:"全台因遺產而打官司的家事案件，大約佔多少比例？",
+   opts:["約 30%","約 1.6%","約 50%"],ans:1,
+   ex:"2024 年司法院資料顯示，因遺產分割或遺囑無效而興訟的，只佔家事案件約 1.6%（約 2000 多件）。比例不高，但一旦發生往往很慘烈。"},
+  {q:"台灣自書遺囑（自己手寫的遺囑），下列哪一項是合法必要的？",
+   opts:["可以用電腦打字後簽名","必須全程親筆手寫，改字要註明字數並簽名","錄一段影片說明即可"],ans:1,
+   ex:"自書遺囑必須「全程親筆手寫」，不可打字；寫錯字還要在塗改處註明增刪字數並簽名，否則整份遺囑可能直接失效。"},
+  {q:"如果想限制孩子揮霍遺產，可以用什麼合法工具？",
+   opts:["遺囑信託，設定條件（如畢業、戒毒）才給錢","直接把孩子除名，不留任何法律依據","口頭交代親戚代管即可"],ans:0,
+   ex:"可運用「遺囑信託」設定條件（如大學畢業、成功戒毒、達特定年齡）按時給付，也可在遺囑約定「禁止分割」（最長 10 年）。法院已確認此做法不侵害特留分。"}
+];
+let answered=0,score=0;
+const quizEl=document.getElementById('quiz');
+quizData.forEach((d,qi)=>{
+  const block=document.createElement('div');block.className='q-block';
+  block.innerHTML=`<h3><span class="q-num">Q${qi+1}.</span>${d.q}</h3>`;
+  const opts=document.createElement('div');opts.className='options';
+  d.opts.forEach((o,oi)=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.onclick=()=>{
+      [...opts.children].forEach(x=>x.disabled=true);
+      if(oi===d.ans){b.classList.add('correct');score++;}
+      else{b.classList.add('wrong');opts.children[d.ans].classList.add('correct');}
+      block.querySelector('.explain').classList.add('show');
+      answered++;
+      if(answered===quizData.length)showScore();
+    };
+    opts.appendChild(b);
+  });
+  block.appendChild(opts);
+  const ex=document.createElement('div');ex.className='explain';ex.innerHTML='💡 '+d.ex;
+  block.appendChild(ex);
+  quizEl.appendChild(block);
+});
+function showScore(){
+  const box=document.getElementById('scoreBox');box.classList.add('show');
+  document.getElementById('scoreNum').textContent=score;
+  const msg=['沒關係，今天就是來學的！','不錯！再聽完整場就更清楚了。','很棒，觀念很清楚！','滿分！你可以當社區的小老師了 👏'];
+  document.getElementById('scoreMsg').textContent=msg[score];
+}
+
+/* ===== CALCULATOR ===== */
+const heirType=document.getElementById('heirType');
+const countLabel=document.getElementById('countLabel');
+const heirCountWrap=document.getElementById('heirCount').parentElement;
+heirType.addEventListener('change',()=>{
+  const v=heirType.value;
+  if(v==='child'||v==='childOnly'){countLabel.textContent='子女人數';heirCountWrap.style.display='block';}
+  else if(v==='parent'){countLabel.textContent='父母人數（最多 2）';heirCountWrap.style.display='block';document.getElementById('heirCount').value=2;}
+  else if(v==='sibling'){countLabel.textContent='兄弟姊妹人數';heirCountWrap.style.display='block';}
+});
+function fmt(n){return 'NT$ '+Math.round(n).toLocaleString('zh-TW');}
+function calcReserve(){
+  const estate=parseFloat(document.getElementById('estate').value)||0;
+  const type=heirType.value;
+  const n=Math.max(1,parseInt(document.getElementById('heirCount').value)||1);
+  let rows=[];
+  // 特留分 = 應繼分 × 比例：直系卑親屬、配偶、父母為 1/2；兄弟姊妹為 1/3
+  if(type==='child'){ // 配偶與子女平均分
+    const parts=n+1; const each=estate/parts;
+    rows.push({name:'配偶',share:each,ratio:'1/2'});
+    rows.push({name:`每名子女（共${n}名）`,share:each,ratio:'1/2'});
+  }else if(type==='childOnly'){
+    const each=estate/n;
+    rows.push({name:`每名子女（共${n}名）`,share:each,ratio:'1/2'});
+  }else if(type==='parent'){ // 配偶 1/2，父母均分另 1/2
+    rows.push({name:'配偶',share:estate/2,ratio:'1/2'});
+    rows.push({name:`每名父母（共${n}名）`,share:(estate/2)/n,ratio:'1/2'});
+  }else if(type==='sibling'){ // 配偶 1/2，兄弟姊妹均分另 1/2，特留分為應繼分 1/3
+    rows.push({name:'配偶',share:estate/2,ratio:'1/2'});
+    rows.push({name:`每名兄弟姊妹（共${n}名）`,share:(estate/2)/n,ratio:'1/3'});
+  }
+  rows.forEach(r=>{ r.reserve = r.ratio==='1/2' ? r.share/2 : r.share/3; });
+  const maxShare=Math.max(...rows.map(r=>r.share))||1;
+
+  let html='<h3 style="margin-bottom:14px">試算結果</h3>';
+  html+=`<div class="bar-legend"><span><i class="sw sw-share"></i>應繼分</span><span><i class="sw sw-reserve"></i>特留分（底線）</span></div>`;
+  rows.forEach(r=>{
+    const sharePct=r.share/maxShare*100;
+    const reservePct=r.reserve/maxShare*100;
+    html+=`<div class="calc-item">
+      <div class="calc-head"><b>${r.name}</b><span class="ratio">特留分＝應繼分 × ${r.ratio}</span></div>
+      <div class="bar-wrap"><div class="bar bar-share" style="width:${sharePct}%"></div></div>
+      <div class="bar-val">應繼分　<b>${fmt(r.share)}</b></div>
+      <div class="bar-wrap"><div class="bar bar-reserve" style="width:${reservePct}%"></div></div>
+      <div class="bar-val">特留分　<b class="accent">${fmt(r.reserve)}</b></div>
+    </div>`;
+  });
+  const box=document.getElementById('calcResult');box.innerHTML=html;box.classList.add('show');
+  // trigger bar animation
+  const bars=box.querySelectorAll('.bar');
+  bars.forEach(b=>{const w=b.style.width;b.style.width='0';requestAnimationFrame(()=>requestAnimationFrame(()=>b.style.width=w));});
+  let noteTxt='※ 應繼分：沒有遺囑時依法分得的比例。特留分：就算有遺囑也不能少於的底線，等於應繼分乘上固定比例（配偶／子女／父母 1/2，兄弟姊妹 1/3）。';
+  if(type==='sibling')noteTxt+=' 立法院正倡議廢除手足特留分，未來可能改變。';
+  noteTxt+=' 本試算為簡化教學用途，實際個案請諮詢律師。';
+  document.getElementById('calcNote').textContent=noteTxt;
+}
+
+/* ===== DETECTIVE ===== */
+const cases=[
+  {title:"案例一：電腦打字的遺囑",
+   body:"王伯伯用電腦把遺囑打得整整齊齊，最後親筆簽名、蓋章，還寫上日期。",
+   valid:false,
+   verdict:"無效",
+   ex:"自書遺囑必須「全程親筆手寫」，不能用電腦打字。即使有簽名蓋章，打字的自書遺囑仍可能被認定無效。若想打字，應改用「代筆遺囑」或「公證遺囑」並符合其要件。"},
+  {title:"案例二：改錯字沒註明",
+   body:"李奶奶親筆手寫遺囑，中途寫錯一個字，直接塗掉重寫，沒有特別註明改了幾個字，但有簽全名與日期。",
+   valid:false,
+   verdict:"有瑕疵／易被挑戰",
+   ex:"自書遺囑若有增刪塗改，必須在更改處「註明增減的字數並另行簽名」，否則該更改部分不生效力，嚴重時恐影響整份遺囑效力。手寫時務必謹慎。"},
+  {title:"案例三：中風無法言語的長輩",
+   body:"陳爺爺中風後無法說話也無法寫字，想立「代筆遺囑」，請見證人代筆。",
+   valid:false,
+   verdict:"現行法律下極困難",
+   ex:"代筆與公證遺囑都要求立遺囑人能「口述」並「聽讀認可」。視障、聽語障、中風無法言語或不識字者，在現行法律下極難立下合法遺囑——這正是賴律師指出的「制度性歧視」。"},
+  {title:"案例四：完整手寫的自書遺囑",
+   body:"張媽媽全程親手書寫遺囑，清楚寫明財產分配、立遺囑年月日，並在最後親筆簽名，全文沒有塗改。",
+   valid:true,
+   verdict:"有效",
+   ex:"完全符合自書遺囑要件：全程親筆、載明年月日、親自簽名。這是最簡單、不需見證人也能成立的遺囑形式，但保管與真偽認定仍要留意。"}
+];
+const detEl=document.getElementById('detective');
+cases.forEach((c,i)=>{
+  const div=document.createElement('div');div.className='case';
+  div.innerHTML=`<div class="case-title">${c.title}</div><div class="case-body">${c.body}</div>`;
+  const btns=document.createElement('div');btns.className='verdict-btns';
+  const bValid=document.createElement('button');bValid.className='vbtn valid';bValid.textContent='✅ 我認為有效';
+  const bInvalid=document.createElement('button');bInvalid.className='vbtn invalid';bInvalid.textContent='❌ 我認為有問題';
+  const ex=document.createElement('div');ex.className='case-explain';
+  function reveal(choseValid){
+    [bValid,bInvalid].forEach(b=>b.disabled=true);
+    const correct=(choseValid===c.valid);
+    const picked=choseValid?bValid:bInvalid;
+    picked.classList.add(correct?'picked-right':'picked-wrong');
+    const lbl=c.valid?'<span class="verdict-label v">判定：'+c.verdict+'</span>':'<span class="verdict-label i">判定：'+c.verdict+'</span>';
+    ex.innerHTML=(correct?'🎯 答對了！ ':'🤔 再想想～ ')+lbl+'<br>'+c.ex;
+    ex.classList.add('show');
+  }
+  bValid.onclick=()=>reveal(true);
+  bInvalid.onclick=()=>reveal(false);
+  btns.appendChild(bValid);btns.appendChild(bInvalid);
+  div.appendChild(btns);div.appendChild(ex);
+  detEl.appendChild(div);
+});
+
+/* ===== CHECKLIST ===== */
+const checks=[
+  {t:"盤點自己的老後照護費用",s:"預留醫療、看護、機構住房的預算"},
+  {t:"想好財產分配的心意",s:"不只是平均分，也想想「為什麼這樣分」"},
+  {t:"了解特留分制度",s:"知道哪些繼承人有最低保障"},
+  {t:"考慮立一份合法遺囑",s:"自書、代筆或公證，選適合自己的形式"},
+  {t:"指定遺囑執行人",s:"讓後事能依自己的意願完成"},
+  {t:"交代後事與身後願望",s:"器官捐贈、葬法、想感謝的人"}
+];
+let done=0;
+const clEl=document.getElementById('checklist');
+checks.forEach(c=>{
+  const item=document.createElement('div');item.className='check-item';
+  item.innerHTML=`<div class="box">✓</div><div class="txt"><b>${c.t}</b><span>${c.s}</span></div>`;
+  item.onclick=()=>{
+    item.classList.toggle('done');
+    done+=item.classList.contains('done')?1:-1;
+    document.getElementById('checkBox').classList.add('show');
+    document.getElementById('checkNum').textContent=done;
+    const msgs=['每勾起一項，就離安心更近一步。','開始了就是好的開始！','一半了，繼續加油。','你比大多數人都準備得更好。','只差一步，幾乎完整了！','太棒了，你已經把老後安排得很周全 👏'];
+    document.getElementById('checkMsg').textContent=msgs[done];
+  };
+  clEl.appendChild(item);
+});
+</script>
+</body>
+</html>
